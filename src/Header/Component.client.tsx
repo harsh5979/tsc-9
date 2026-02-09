@@ -8,6 +8,7 @@ import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
+import { Button } from '@payloadcms/ui'
 
 interface HeaderClientProps {
   data: Header
@@ -37,6 +38,17 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         </Link>
         <HeaderNav data={data} />
       </div>
+
+      <nav>
+        <ul className='flex gap-5 w-auto justify-center items-center mx-auto'>
+          <li><Link href="/profile/links">
+            <Button>Links</Button>
+          </Link></li>
+          <li><Link href="/profile/details">
+            <Button>Profile Details</Button >
+          </Link></li>
+        </ul>
+      </nav>
     </header>
   )
 }
