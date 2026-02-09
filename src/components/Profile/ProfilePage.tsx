@@ -4,22 +4,23 @@ import Image from 'next/image'
 import { errors } from 'playwright-core';
 import React, { useState, useEffect } from 'react';
 import { createProfileDetailsStore, useProfileDetailsStore } from '../store/page';
-export const ProfilePage = () => {
+
+export const ProfilePage = ({ profile, setprofile }: { profile: any, setprofile: any }) => {
 
     const [errors, setErrors] = useState({});
     const [isFormValid, setIsFormValid] = useState(false);
-    const { name, lastName, email, password, profileImage } = useProfileDetailsStore;
+    const { firstName, lastName, email, password, profileImage } = profile;
 
 
     useEffect(() => {
         validateForm();
-    }, [name, email, password]);
+    }, [firstName, lastName, email, password]);
     // Validate form
     const validateForm = () => {
         let errors: any = {};
 
-        if (!name) {
-            errors.name = 'Name is required.';
+        if (!firstName) {
+            errors.firstName = 'Name is required.';
         }
         if (!lastName) {
             errors.lastName = 'Last Name is required.';
@@ -52,43 +53,46 @@ export const ProfilePage = () => {
 
         <div className="col-span-8 border border-white h-full">
 
-
+            <div className="container py-10">
+                <h1>profile details</h1>
+                <p>Add your profile details to creaet a personal touch to your profile</p>
+            </div>
             <div className='container py-16'>
                 <div className='flex flex-col gap-2 '>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 py-2">
                         <label htmlFor="profileImage" className='text-white'>profile image</label>
-                        <input type="file" accept="image/*" onChange={(e) => useProfileDetailsStore.setProfileDetails({ ...profileDetails, profileImage: e.target.value })} />
+                        <input type="file" name="profileImage" accept="image.png,image.jpg,image.jpeg" onChange={(e) => setprofile({ ...profile, profileImage: URL.createObjectURL(e.target.files?.[0]) })} />
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 py-2">
                         <label htmlFor="name">First Name</label>
                         <input
                             className='border border-white'
                             placeholder="First Name"
-                            value={name}
-                            onChange={(e) => useProfileDetailsStore.setProfileDetails({ name: e.target.value })}
+                            value={firstName}
+                            onChange={(e) => setprofile({ ...profile, firstName: e.target.value })}
                         />
-                        {errors?.name && <p className='text-red-500'>{errors.name}</p>}
                     </div>
-                    <div className="flex items-center gap-2">
+                    {errors?.firstName && <p className='text-red-500'>{errors.firstName}</p>}
+                    <div className="flex items-center gap-2 py-2">
                         <label htmlFor="lastName">Last Name</label>
                         <input
                             className='border border-white'
                             placeholder="Last Name"
                             value={lastName}
-                            onChange={(e) => useProfileDetailsStore.setProfileDetails({ ...profileDetails, lastName: e.target.value })}
+                            onChange={(e) => setprofile({ ...profile, lastName: e.target.value })}
                         />
-                        {errors?.lastName && <p className='text-red-500'>{errors.lastName}</p>}
                     </div>
-                    <div className="flex items-center gap-2">
+                    {errors?.lastName && <p className='text-red-500'>{errors.lastName}</p>}
+                    <div className="flex items-center gap-2 py-2">
                         <label htmlFor="email">Email</label>
                         <input
                             className='border border-white'
                             placeholder="Email"
                             value={email}
-                            onChange={(e) => useProfileDetailsStore.setProfileDetails({ ...profileDetails, email: e.target.value })}
+                            onChange={(e) => setprofile({ ...profile, email: e.target.value })}
                         />
-                        {errors?.email && <p className='text-red-500'>{errors.email}</p>}
                     </div>
+                    {errors?.email && <p className='text-red-500'>{errors.email}</p>}
 
                     <button
                         className='border border-white'
