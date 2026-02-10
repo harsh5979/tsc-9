@@ -8,37 +8,38 @@ import { ProfilePage } from '@/components/Profile/ProfilePage';
 import { useProfileDetailsStore } from '@/components/store/page';
 import { Mobile } from '@/components/mobile/page';
 import { useState } from 'react';
-import { email } from 'payload/shared';
+import { useParams } from 'next/navigation';
+import LinksPage from '@/components/links/LinksPage';
 
 
-export default function ProfileDetailsPage({ params }: { params: { slug: string } }) {
-
-    // const { slug } = params
+export default function ProfileDetailsPage() {
+    const { slug } = useParams()
     const [profile, setprofile] = useState(
         {
             firstName: "",
             lastName: "",
             email: "",
-            password: "",
-            profileImage: {},
+            profileImage: "/profile.png",
         }
     )
-    console.log(profile);
-
-
+    const [link, setLink] = useState([
+        { platform: "github", link: "https://github.com/" },
+        { platform: "linkedin", link: "https://linkedin.com/" },
+        { platform: "youtube", link: "https://youtube.com/" },
+    ])
 
 
     return (
         <div className='container'>
 
 
-            <div className=" grid grid-cols-12 gap-4">
+            <div className=" grid grid-cols-12 gap-4 mx-auto w-full items-center py-10">
+                <Mobile profile={profile} setprofile={setprofile} slug={slug} link={link} setLink={setLink} />
 
-                <Mobile profile={profile} setprofile={setprofile} />
 
+                {slug === "details" && <ProfilePage profile={profile} setprofile={setprofile} />}
 
-                <ProfilePage profile={profile} setprofile={setprofile} />
-
+                {slug === "links" && <LinksPage link={link} setLink={setLink} />}
 
             </div>
 

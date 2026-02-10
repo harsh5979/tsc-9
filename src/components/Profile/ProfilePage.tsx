@@ -51,7 +51,7 @@ export const ProfilePage = ({ profile, setprofile }: { profile: any, setprofile:
     };
     return (
 
-        <div className="col-span-8 border border-white h-full">
+        <div className="col-span-8 border border-white h-full bg-white">
 
             <div className="container py-10">
                 <h1>profile details</h1>
@@ -61,7 +61,17 @@ export const ProfilePage = ({ profile, setprofile }: { profile: any, setprofile:
                 <div className='flex flex-col gap-2 '>
                     <div className="flex items-center gap-2 py-2">
                         <label htmlFor="profileImage" className='text-white'>profile image</label>
-                        <input type="file" name="profileImage" accept="image.png,image.jpg,image.jpeg" onChange={(e) => setprofile({ ...profile, profileImage: URL.createObjectURL(e.target.files?.[0]) })} />
+                        <input
+                            type="file"
+                            name="profileImage"
+                            accept="image.png,image.jpg,image.jpeg"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                    setprofile({ ...profile, profileImage: URL.createObjectURL(file) });
+                                }
+                            }}
+                        />
                     </div>
                     <div className="flex items-center gap-2 py-2">
                         <label htmlFor="name">First Name</label>
